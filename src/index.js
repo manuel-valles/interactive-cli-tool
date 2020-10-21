@@ -1,14 +1,41 @@
+const fs = require('fs');
 const inquirer = require('inquirer');
+const path = require('path');
 
-var questions = [
-  {
-    type: 'confirm',
-    name: 'isHuman',
-    message: 'Are you a human?',
-    default: false,
-  },
-];
+const existingConfig = fs.existsSync('now.json');
 
-inquirer.prompt(questions).then((answers) => {
-  console.log(JSON.stringify(answers, null, '  '));
-});
+const buildConfig = () => {
+  const questions = [
+    {
+      type: 'text',
+      name: 'name',
+      message: 'What is the name of the project?',
+      default: path.basename(process.cwd()),
+    },
+  ];
+
+  inquirer.prompt(questions).then((answers) => {
+    console.log(JSON.stringify(answers, null, '  '));
+  });
+};
+
+if (existingConfig) {
+  inquirer
+    .prompt([
+      {
+        type: 'confirm',
+        name: 'overwrite',
+        message: 'now.json already exists! Would you like to overwrite it?',
+        default: false,
+      },
+    ])
+    .then((answers) => {
+      if (answers.overwrite) {
+        buildConfig();
+      } else {
+        console.log('Bye bye! 👋🏼');
+      }
+    });
+} else {
+  buildConfig();
+}
