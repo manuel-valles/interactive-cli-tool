@@ -37,6 +37,4 @@ const nodeExpress = async (config) => {
   };
 };
 
-module.exports = {
-  nodeExpress,
-};
+module.exports = nodeExpress;
