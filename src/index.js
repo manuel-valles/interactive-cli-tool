@@ -2,10 +2,16 @@ const fs = require('fs');
 const inquirer = require('inquirer');
 const path = require('path');
 
+const { nodeExpress } = require('./configs/node-express');
+
 const existingConfig = fs.existsSync('now.json');
 
-const buildConfig = () => {
-  const questions = [
+const buildConfig = async () => {
+  let config = {
+    version: 2,
+  };
+
+  const answers = await inquirer.prompt([
     {
       type: 'text',
       name: 'name',
@@ -25,11 +31,17 @@ const buildConfig = () => {
         'lambda',
       ],
     },
-  ];
+  ]);
 
-  inquirer.prompt(questions).then((answers) => {
-    console.log(JSON.stringify(answers, null, '  '));
-  });
+  config.name = answers.name;
+  switch (answers.type) {
+    case 'node-express':
+      config = await nodeExpress(config);
+      break;
+    default:
+      break;
+  }
+  console.log(config);
 };
 
 if (existingConfig) {
