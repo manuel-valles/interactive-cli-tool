@@ -1,3 +1,5 @@
+#! /usr/bin/env node
+
 const fs = require('fs');
 const inquirer = require('inquirer');
 const path = require('path');
@@ -61,20 +63,13 @@ const buildConfig = async () => {
       default: answers.name,
       when: (a) => a.specifyAlias,
     },
-    {
-      type: 'confirm',
-      name: 'deploy',
-      message: 'Would you like to deploy right now?',
-      default: false,
-    },
   ]);
 
   if (moreAnswers.alias)
     config.alias = moreAnswers.alias.split(',').map((a) => a.trim());
   fs.writeFileSync(nowPath, JSON.stringify(config, null, 2), 'utf8');
-  if (moreAnswers.deploy) {
-    console.log('Deploying...');
-  }
+  console.log('All done! 🎉 Type "now" to deploy!');
+  process.exit(0);
 };
 
 if (existingConfig) {

@@ -40,3 +40,22 @@ Example for the library used in this project (_Inquirer_):
   ✔ Which style guide do you want to follow? · airbnb
   ✔ What format do you want your config file to be in? · JavaScript
   ```
+
+### NOTES:
+
+- To test the development of the _package/module_ locally:
+  - Add the **bin** to the package.json:
+  ```json
+  {
+    "bin": {
+      "now-config": "src/index.js"
+    }
+  }
+  ```
+  - Specifiy the specific interpreter on the top of the main file (_inde.js_)
+  ```js
+    #! /usr/bin/env node
+  ```
+  - `$ npm link` -> it will install globally for the current directory;
+  - `$ interactive-cli-tool` -> it will run the module in the current directory;
+  - To remove the npm link, since `$ npm unlink` is not working, use: `$ npm uninstall -g interactive-clit-tool`.
