@@ -6,7 +6,8 @@ const nodeExpress = require('./configs/node-express');
 const staticConfig = require('./configs/static');
 const fef = require('./configs/fef');
 
-const existingConfig = fs.existsSync('now.json');
+const nowPath = path.join(process.cwd(), 'now.json');
+const existingConfig = fs.existsSync(nowPath);
 
 const buildConfig = async () => {
   let config = {
@@ -46,7 +47,34 @@ const buildConfig = async () => {
     default:
       break;
   }
-  console.log(config);
+  const moreAnswers = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'specifyAlias',
+      message: 'Would like to specify an alias?',
+      default: true,
+    },
+    {
+      type: 'text',
+      name: 'alias',
+      message: 'What is the alias? (Specify multiple separated by commas)',
+      default: answers.name,
+      when: (a) => a.specifyAlias,
+    },
+    {
+      type: 'confirm',
+      name: 'deploy',
+      message: 'Would you like to deploy right now?',
+      default: false,
+    },
+  ]);
+
+  if (moreAnswers.alias)
+    config.alias = moreAnswers.alias.split(',').map((a) => a.trim());
+  fs.writeFileSync(nowPath, JSON.stringify(config, null, 2), 'utf8');
+  if (moreAnswers.deploy) {
+    console.log('Deploying...');
+  }
 };
 
 if (existingConfig) {
