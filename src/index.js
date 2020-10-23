@@ -4,7 +4,7 @@ const path = require('path');
 
 const nodeExpress = require('./configs/node-express');
 const staticConfig = require('./configs/static');
-const react = require('./configs/react');
+const fef = require('./configs/fef');
 
 const existingConfig = fs.existsSync('now.json');
 
@@ -44,7 +44,11 @@ const buildConfig = async () => {
       config = await staticConfig(config);
       break;
     case 'react':
-      config = await react(config);
+      config = await fef(config, 'build');
+      break;
+    case 'vue':
+    case 'static-build':
+      config = await fef(config);
       break;
     default:
       break;

@@ -13,13 +13,13 @@ const baseConfig = {
   routes: [{ handle: 'filesystem' }, { src: '/.*', dest: 'index.html' }],
 };
 
-const react = async (config) => {
+const fef = async (config, defaultBuild = 'dist') => {
   const answers = await inquirer.prompt([
     {
       type: 'text',
       name: 'directory',
       message: 'What is the build directory?',
-      default: 'build',
+      default: defaultBuild,
     },
     {
       type: 'confirm',
@@ -63,4 +63,4 @@ const react = async (config) => {
   };
 };
 
-module.exports = react;
+module.exports = fef;

@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint src/",
-    "now-build": "yarn run build"
+    "now-build": "npm run build"
   },
   "repository": {
     "type": "git",
