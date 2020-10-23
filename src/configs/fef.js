@@ -14,6 +14,17 @@ const baseConfig = {
 };
 
 const fef = async (config, defaultBuild = 'dist') => {
+  let packageJSONPath, packageJSON, buildScript;
+  try {
+    packageJSONPath = path.join(process.cwd(), '/package.json');
+    // eslint-disable-next-line
+    packageJSON = require(packageJSONPath);
+    buildScript = (packageJSON.scripts || {})['now-build'] || 'npm run build';
+  } catch (error) {
+    console.error('package.json does not exist');
+    process.exit(1);
+  }
+
   const answers = await inquirer.prompt([
     {
       type: 'text',
@@ -28,33 +39,22 @@ const fef = async (config, defaultBuild = 'dist') => {
         'Do you want to add/update a "now-build" script to your package.json?',
       default: true,
     },
+    {
+      type: 'text',
+      name: 'buildScript',
+      message: 'What is the build command?',
+      default: buildScript,
+      when: (a) => a.addBuildScript,
+    },
   ]);
   if (answers.addBuildScript) {
-    const packageJSONPath = path.join(process.cwd(), '/package.json');
-    try {
-      // eslint-disable-next-line
-      const packageJSON = require(packageJSONPath);
-      const buildScript =
-        (packageJSON.scripts || {})['now-build'] || 'npm run build';
-      const buildAnswers = await inquirer.prompt([
-        {
-          type: 'text',
-          name: 'buildScript',
-          message: 'What is the build command?',
-          default: buildScript,
-        },
-      ]);
-      packageJSON.scripts = packageJSON.scripts || {};
-      packageJSON.scripts['now-build'] = buildAnswers.buildScript;
-      fs.writeFileSync(
-        packageJSONPath,
-        JSON.stringify(packageJSON, null, 2),
-        'utf8'
-      );
-    } catch (error) {
-      console.error('package.json does not exist');
-      process.exit(1);
-    }
+    packageJSON.scripts = packageJSON.scripts || {};
+    packageJSON.scripts['now-build'] = answers.buildScript;
+    fs.writeFileSync(
+      packageJSONPath,
+      JSON.stringify(packageJSON, null, 2),
+      'utf8'
+    );
   }
   baseConfig.builds[0].config.distDir = answers.directory;
   return {

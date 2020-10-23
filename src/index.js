@@ -24,14 +24,7 @@ const buildConfig = async () => {
       type: 'list',
       name: 'type',
       message: 'What type of project?',
-      choices: [
-        'node-express',
-        'static',
-        'react',
-        'vue',
-        'static-build',
-        'lambda',
-      ],
+      choices: ['node-express', 'static', 'react', 'vue', 'static-build'],
     },
   ]);
 

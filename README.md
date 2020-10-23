@@ -4,7 +4,9 @@ An Interactive CLI Tool with Node.js
 
 ## Idea
 
-This will be useful for the **now-config**. This CLI Tool will help generate a _now.sh_ configuration file.
+This will be useful for the **now-config** file. This CLI Tool will help generate a _now.sh_ configuration file.
+
+- **Now/Vercel** Docs: https://vercel.com/docs
 
 ## Usage
 
