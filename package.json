@@ -4,7 +4,8 @@
   "description": "An Interactive CLI Tool with Node.js",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "now-build": "yarn run build"
   },
   "repository": {
     "type": "git",

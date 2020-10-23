@@ -28,7 +28,6 @@ const nodeExpress = async (config) => {
       default: main,
     },
   ]);
-  console.log(answers);
   baseConfig.builds[0].src = answers.main;
   baseConfig.routes[0].dest = answers.main;
   return {
